@@ -1,0 +1,37 @@
+Create functions that reads files
+
+For grammar file:
+    Read first line into list - display them as the variables
+    Read second line into list - display as terminals
+    Read rest of the lines as a list of strings.
+        The last element is the start variable - display it
+        The rest are the rules
+
+    Create a function to read rules:
+        Separate the strings into a list with ' ' as the delimiter
+        First element is the variable
+        Second element should be the '->'
+        Then make a dictionary with the variable pointing to a list of all its rules.
+
+
+For input file:
+
+
+
+
+
+Algorithm:
+
+D = On input w - w1 ... wn:
+    1. For w = e, if S -> e is a rule, accept; else reject      [w = e case]
+    2. For i = 1 to n:                                          [examine each substring of length 1]
+    3.      For each varianle A:
+    4.          Test whether A -> b is a rule, where  b = wi
+    5.          If so, place A in table(i,i).
+    6. For l = 2 to n:                                          [l is the length of the substring]
+    7.      For i = 1 to n - l + 1                              [i is the start position of the substring]
+    8.          Let j = i + l - 1                               [j is the end position of the substring]
+    9.          For k = i to j - 1:                             [k is the split position]
+    10.             For each rule A -> BC:
+    11.                 If table(i,k) contains B and table(k+1, j) contains C, put A in table(i,j)
+    12. If S is in table(1,n), accept; else reject.

@@ -35,3 +35,12 @@ D = On input w - w1 ... wn:
     10.             For each rule A -> BC:
     11.                 If table(i,k) contains B and table(k+1, j) contains C, put A in table(i,j)
     12. If S is in table(1,n), accept; else reject.
+
+
+Requirement:
+
+Your program must run from the command line. 
+You can write your code in an IDE, but it needs to be able to take command line arguments. Even if your IDE has a way to run the program with command line arguments, you are strongly advised to make sure that you can actually run the code directly from the command line (this is how I will be running it).
+You will need to submit a README file that explains how to run your code.
+If you are coding in java, please do not use any package statements; this will cause compilation errors when someone else runs it.
+You may not use any external libraries. All of your code must be written using the base language. You may use import statements, but you may not install any libraries that are not part of the base language. If I deem your code to be in violation of this rule, I reserve the right to make you resubmit and/or give you a 0 and/or report you for an honor code violation.

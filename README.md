@@ -80,6 +80,6 @@ Each of your input files should include 10 strings that are part of the language
 Run your grammar parser from task 1 on each of your three grammars. Verify that you get the correct results. If you didn’t get the correct results, then you will have to decide whether your grammar is incorrect, or whether your parser is incorrect!
 
 ## Sources ##
-- [](https://www.geeksforgeeks.org/bitsstdc-h-c/)
-- [](https://www.w3schools.com/cpp/cpp_files.asp)
-- [](https://www.w3schools.com/cpp/cpp_strings_input.asp)
+- https://www.geeksforgeeks.org/bitsstdc-h-c/
+- https://www.geeksforgeeks.org/read-a-file-line-by-line-in-cpp/
+- https://www.w3schools.com/cpp/cpp_strings_input.asp

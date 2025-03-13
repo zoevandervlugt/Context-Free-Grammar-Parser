@@ -71,6 +71,7 @@ int main(){
     // testing file names
     // cout << grammar << " " << input;
 
+    //change name to grammar contents.
     vector<string> contents = openFile(grammar);
     // testing openFile
     // for(string line: contents){
@@ -82,7 +83,8 @@ int main(){
     // for(string s: variables){
     //     cout << s << endl;
     // }
-
+    
+    
     vector<string> rules = readRules(contents);
 
     cout << "Variables: " << contents[0] << endl << endl;
@@ -94,4 +96,6 @@ int main(){
     cout << endl;
     cout << "Start Variable: " << contents.back() << endl;
 }
+// g++ main.cpp -o main
+// ./main
 // astarGrammar.txt astarGrammarInput.txt

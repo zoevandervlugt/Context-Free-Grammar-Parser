@@ -64,7 +64,7 @@ vector<string> readRules(vector<string> content) {
 }
 
 bool findRule(vector<vector<string>> rules, string var, string term) {
-    cout << "Looking for rule with " << var << " and " << term << endl;
+    // cout << "Looking for rule with " << var << " and " << term << endl;
     for(vector<string> rule: rules){
         if(rule[0] == var) {
             if(rule.back() == term){
@@ -73,7 +73,7 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
             }
         }
     }
-    cout << "Didn't find rule" << endl;
+    // cout << "Didn't find rule" << endl;
     return false;
 }
 
@@ -92,46 +92,46 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
 // }
 
 bool checkLine(string line, vector<string> variables, vector<string> terminals, vector<vector<string>> rules, string startVar){
-    string table[line.length() - 1][line.length() - 1];
     // If the line is empty, accept only if there's a rule where the startVar goes to e
     if(line == "" || line == " "){
-        cout << "Checking empty line" << endl;
-        cout << findRule(rules, startVar, "e") << endl;
+        // cout << "Checking empty line" << endl;
         return findRule(rules, startVar, "e");
-    } else {
-        // Goes through each char of the line
-        for(int i = 0; i < line.length(); i++){
-            string b = line[i] + "";       // Turn the current char into a string
-            cout << "Current char: " << b << endl;
-            for(string A: variables){
-                if(findRule(rules, A, b)){
-                    table[i][i] = A;
-                }
+    }
+    string table[line.length() - 1][line.length() - 1];
+    // Goes through each char of the line
+    for(int i = 0; i < line.length(); i++){
+        string b = line[i] + "";       // Turn the current char into a string
+        // cout << "Current char: " << b << endl;
+        for(string A: variables){
+            if(findRule(rules, A, b)){
+                table[i][i] = A;
             }
         }
-        for(int l = 1; l < line.length(); l++){
-            for(int i = 0; i < line.length() - l + 1; i++){
-                int j = i + l - 1;
-                for(int k = i; i <= j - 1; k++) {
-                    // For each rule that leads to 2 concatenated variables
-                    for(vector<string> rule: rules){
-                        if(rule[1].length() > 1){
-                            string A = rule[0];
-                            string B = rule[0][0] + "";
-                            string C = rule[0][1] + "";
-                            if(table[i][k] == B && table[k+1][j] == C){
-                                table[i][j] = A;
-                            }
+    }
+    for(int l = 1; l < line.length(); l++){
+        for(int i = 0; i < line.length() - l + 1; i++){
+            int j = i + l - 1;
+            for(int k = i; i <= j - 1; k++) {
+                // For each rule that leads to 2 concatenated variables
+                for(vector<string> rule: rules){
+                    if(rule[1].length() > 1){
+                        string A = rule[0];
+                        string B = rule[0][0] + "";
+                        string C = rule[0][1] + "";
+                        if(table[i][k] == B && table[k+1][j] == C){
+                            table[i][j] = A;
                         }
                     }
                 }
             }
         }
-        return table[0][line.length() - 1] == startVar;
     }
+    return table[0][line.length() - 1] == startVar;
 }
 
 int main(){
+    cout << std::boolalpha;
+
     string grammar;
     string input;
     cin >> grammar >> input;    // Take in file names

@@ -99,8 +99,10 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
 }
 
 int main(){
+
     string grammar;
     string input;
+    
     cin >> grammar >> input;
 
     vector<string> grammarContents = openFile(grammar);
@@ -113,6 +115,7 @@ int main(){
     for(string rule: rules) {
         cout << rule << endl;
     }
+
     cout << endl;
     cout << "Start Variable: " << grammarContents.back() << endl;
 

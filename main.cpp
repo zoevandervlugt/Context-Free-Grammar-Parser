@@ -67,6 +67,7 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
     // cout << "Looking for rule with " << var << " and " << term << endl;
     for(vector<string> rule: rules){
         if(rule[0] == var) {
+            // cout << "rule[0] " << rule[0] << endl;
             if(rule.back() == term){
                 //cout << "Found rule" << endl;
                 return true;
@@ -93,32 +94,33 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
 
 bool checkLine(string line, vector<string> variables, vector<string> terminals, vector<vector<string>> rules, string startVar){
     // If the line is empty, accept only if there's a rule where the startVar goes to e
+    string table[line.length()][line.length()];
     if(line == "" || line == " "){
         // cout << "Checking empty line" << endl;
         return findRule(rules, startVar, "e");
     }
-    string table[line.length() - 1][line.length() - 1];
+    
     // Goes through each char of the line
     for(int i = 0; i < line.length(); i++){
         string b = string() + line[i];       // Turn the current char into a string
-        // cout << "Current char: " << b << endl;
-        // cout << "Current char: " << line[i] << endl;
         for(string A: variables){
             if(findRule(rules, A, b)){
                 table[i][i] = A;
+                break;
+                // cout << "(i,i) = " << table[i][i] << endl;
             }
         }
     }
 
     for(int l = 1; l < line.length(); l++){
-        cout << "length: " << line.length() << endl;
-        for(int i = 0; i <= line.length() - l + 1; i++){
+        // cout << "length: " << line.length() << endl;
+        for(int i = 0; i < line.length() - l; i++){
             
             int j = i + l - 1;
-            cout << "i: " << i << endl;
-            cout << "j: " << j << endl;
-            for(int k = i; k <= j - 1; k++) {
-                cout << "k: " << i << endl;// For each rule that leads to 2 concatenated variables
+            // cout << "i: " << i << endl;
+            // cout << "j: " << j << endl;
+            for(int k = i; k <= j; k++) {
+                // cout << "k: " << k << endl;// For each rule that leads to 2 concatenated variables
                 for(vector<string> rule: rules){
                     if(rule[1].length() > 1){
                         string A = rule[0];
@@ -132,6 +134,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
             }
         }
     }
+    // cout << "table[0][length - 1]: " << table[0][line.length() - 1] << endl;
     return table[0][line.length() - 1] == startVar;
 }
 
@@ -153,7 +156,7 @@ int main(){
     }
     cout << endl;
     cout << "Start Variable: " << grammarContents.back() << endl;
-
+    cout << endl;
     vector<string> inputContents = openFile(input);                 // Turn input into a vector of strings, one string per line
     vector<string> variables = splitString(grammarContents[0]);     // Set variables to a formatted version of the first line of the grammar (each variable is a string)
     vector<string> terminals = splitString(grammarContents[1]);     // Set variables into a formtted version of second line of input

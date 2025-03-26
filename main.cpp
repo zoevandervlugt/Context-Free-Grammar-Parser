@@ -68,7 +68,7 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
     for(vector<string> rule: rules){
         if(rule[0] == var) {
             if(rule.back() == term){
-                cout << "Found rule" << endl;
+                //cout << "Found rule" << endl;
                 return true;
             }
         }
@@ -100,24 +100,30 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
     string table[line.length() - 1][line.length() - 1];
     // Goes through each char of the line
     for(int i = 0; i < line.length(); i++){
-        string b = line[i] + "";       // Turn the current char into a string
+        string b = string() + line[i];       // Turn the current char into a string
         // cout << "Current char: " << b << endl;
+        // cout << "Current char: " << line[i] << endl;
         for(string A: variables){
             if(findRule(rules, A, b)){
                 table[i][i] = A;
             }
         }
     }
+
     for(int l = 1; l < line.length(); l++){
-        for(int i = 0; i < line.length() - l + 1; i++){
+        cout << "length: " << line.length() << endl;
+        for(int i = 0; i <= line.length() - l + 1; i++){
+            
             int j = i + l - 1;
-            for(int k = i; i <= j - 1; k++) {
-                // For each rule that leads to 2 concatenated variables
+            cout << "i: " << i << endl;
+            cout << "j: " << j << endl;
+            for(int k = i; k <= j - 1; k++) {
+                cout << "k: " << i << endl;// For each rule that leads to 2 concatenated variables
                 for(vector<string> rule: rules){
                     if(rule[1].length() > 1){
                         string A = rule[0];
-                        string B = rule[0][0] + "";
-                        string C = rule[0][1] + "";
+                        string B = string() + rule[0][0];
+                        string C = string() + rule[0][1];
                         if(table[i][k] == B && table[k+1][j] == C){
                             table[i][j] = A;
                         }
@@ -161,7 +167,7 @@ int main(){
 
     // Check each line against the grammar using checkline, and print the matching message
     for(string line: inputContents){
-        cout << line << endl;
+        // cout << line << endl;
         if(checkLine(line, variables, terminals, formattedRules, startVar)){
             cout << line << ": Accept" << endl;
         } else {

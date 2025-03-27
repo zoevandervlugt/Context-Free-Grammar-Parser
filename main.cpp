@@ -78,23 +78,9 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
     return false;
 }
 
-// vector<string> findMultiVarRule(vector<vector<string>> rules, string var){
-//     vector<string> resultingVars;
-//     for(vector<string> rule: rules){
-//         // if the starting variable matches
-//         if(rule[0] == var){
-//             // check if there's multiple corresponding variables (the string length would be more than 1)
-//             if(rule[1].length() > 1){
-//                 resultingVars.push_back(rule[1]);
-//             }
-//         }
-//     }
-//     return resultingVars;
-// }
-
 bool checkLine(string line, vector<string> variables, vector<string> terminals, vector<vector<string>> rules, string startVar){
     // If the line is empty, accept only if there's a rule where the startVar goes to e
-    string table[line.length()][line.length()];
+    vector<string> table[line.length()][line.length()];
     if(line == "" || line == " "){
         // cout << "Checking empty line" << endl;
         return findRule(rules, startVar, "e");
@@ -105,8 +91,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         string b = string() + line[i];       // Turn the current char into a string
         for(string A: variables){
             if(findRule(rules, A, b)){
-                table[i][i] = A;
-                break;
+                table[i][i].push_back(A);
                 // cout << "(i,i) = " << table[i][i] << endl;
             }
         }
@@ -126,8 +111,8 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
                         string A = rule[0];
                         string B = string() + rule[0][0];
                         string C = string() + rule[0][1];
-                        if(table[i][k] == B && table[k+1][j] == C){
-                            table[i][j] = A;
+                        if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[i][k].begin(), table[i][k].end(), C) > 0)){
+                            table[i][j].push_back(A);
                         }
                     }
                 }
@@ -135,7 +120,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         }
     }
     // cout << "table[0][length - 1]: " << table[0][line.length() - 1] << endl;
-    return table[0][line.length() - 1] == startVar;
+    return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 
 int main(){

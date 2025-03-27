@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // @brief Opens a file and returns a vector of strings (one for each line)
 // @param Name of file
 // @return Vector of strings (one for each file line)
@@ -119,7 +120,15 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
             }
         }
     }
-    // cout << "table[0][length - 1]: " << table[0][line.length() - 1] << endl;
+    for(int i = 0; i < line.length(); i++) {
+        cout << "i = " << i << endl;
+        for(int j = 0; j < line.length(); j++) {
+            cout << "j = " << j << endl;
+            for(string var : table[i][j]) {
+                cout << "var = " << var << endl;
+            }
+        }
+    }
     return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 

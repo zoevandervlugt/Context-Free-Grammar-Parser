@@ -40,7 +40,7 @@ vector<string> splitString(string s){
             }
         } else{
             current = current + s[i];
-            if(s[i] == s.back()) {
+            if(i == s.size() - 1) {
                 strings.push_back(current);
             }
             i++;
@@ -93,7 +93,11 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         for(string A: variables){
             if(findRule(rules, A, b)){
                 table[i][i].push_back(A);
-                // cout << "(i,i) = " << table[i] << endl;
+                cout << "(i,i) = (" << i << ", " << i << ")" << "=";
+                for(string str : table[i][i]){
+                    cout << " " << str;
+                }
+                cout << endl;
             }
         }
     }
@@ -108,6 +112,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
             for(int k = i; k <= j; k++) {
                 // cout << "k: " << k << endl;// For each rule that leads to 2 concatenated variables
                 for(vector<string> rule: rules){
+                    // cout << "rule[1]= " << rule[1] << endl;
                     if(rule[1].length() > 1){
                         string A = rule[0];
                         string B = string() + rule[0][0];
@@ -160,6 +165,13 @@ int main(){
     vector<vector<string>> formattedRules;
     for(string rule: rules){
         formattedRules.push_back(splitString(rule));
+    }
+
+    for(vector<string> rule: formattedRules){
+        for(string str: rule){
+            cout << str << " ";
+        }
+        cout << endl;
     }
 
     // Check each line against the grammar using checkline, and print the matching message

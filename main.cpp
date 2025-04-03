@@ -93,7 +93,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         for(string A: variables){
             if(findRule(rules, A, b)){
                 table[i][i].push_back(A);
-                // cout << "(i,i) = " << table[i][i] << endl;
+                // cout << "(i,i) = " << table[i] << endl;
             }
         }
     }
@@ -120,15 +120,15 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
             }
         }
     }
-    for(int i = 0; i < line.length(); i++) {
-        cout << "i = " << i << endl;
-        for(int j = 0; j < line.length(); j++) {
-            cout << "j = " << j << endl;
-            for(string var : table[i][j]) {
-                cout << "var = " << var << endl;
-            }
-        }
-    }
+    // for(int i = 0; i < line.length(); i++) {
+    //     cout << "i = " << i << endl;
+    //     for(int j = 0; j < line.length(); j++) {
+    //         cout << "j = " << j << endl;
+    //         for(string var : table[i][j]) {
+    //             cout << "var = " << var << endl;
+    //         }
+    //     }
+    // }
     return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 

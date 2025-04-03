@@ -93,19 +93,18 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         for(string A: variables){
             if(findRule(rules, A, b)){
                 table[i][i].push_back(A);
-                cout << "(i,i) = (" << i << ", " << i << ")" << "=";
-                for(string str : table[i][i]){
-                    cout << " " << str;
-                }
-                cout << endl;
+                // cout << "(i,i) = (" << i << ", " << i << ")" << "=";
+                // for(string str : table[i][i]){
+                //     cout << " " << str;
+                // }
+                // cout << endl;
             }
         }
     }
 
-    for(int l = 1; l < line.length(); l++){
+    for(int l = 2; l <= line.length(); l++){
         // cout << "length: " << line.length() << endl;
-        for(int i = 0; i < line.length() - l; i++){
-            
+        for(int i = 0; i <= line.length() - l; i++){
             int j = i + l - 1;
             // cout << "i: " << i << endl;
             // cout << "j: " << j << endl;
@@ -114,11 +113,19 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
                 for(vector<string> rule: rules){
                     // cout << "rule[1]= " << rule[1] << endl;
                     if(rule[1].length() > 1){
+                        // cout << "rule[0]= " << rule[0] << ", ";
                         string A = rule[0];
-                        string B = string() + rule[0][0];
-                        string C = string() + rule[0][1];
-                        if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[i][k].begin(), table[i][k].end(), C) > 0)){
+                        // cout << "rule[1][0]= " << rule[1][0] << ", ";
+                        string B = string() + rule[1][0];
+                        // cout << "rule[1][1]= " << rule[1][1] << endl;
+                        string C = string() + rule[1][1];
+                        if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[k+1][j].begin(), table[k+1][j].end(), C) > 0)){
                             table[i][j].push_back(A);
+                            // cout << "table[i][j]= ";
+                            // for(string str: table[i][j]) {
+                            //     cout << str << " ";
+                            // }
+                            // cout << endl;
                         }
                     }
                 }
@@ -167,12 +174,12 @@ int main(){
         formattedRules.push_back(splitString(rule));
     }
 
-    for(vector<string> rule: formattedRules){
-        for(string str: rule){
-            cout << str << " ";
-        }
-        cout << endl;
-    }
+    // for(vector<string> rule: formattedRules){
+    //     for(string str: rule){
+    //         cout << str << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     // Check each line against the grammar using checkline, and print the matching message
     for(string line: inputContents){

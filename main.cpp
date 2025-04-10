@@ -53,46 +53,62 @@ vector<string> splitString(string s){
 // @param String vector of contents of the file
 // @return String vector of the rules of the grammar defined in the file
 vector<string> readRules(vector<string> content) {
-    vector<string> rules;
-    for(int i = 2; i < content.size() - 1; i++) {
-        string line = content[i];
-        vector<string> ruleContents = splitString(line);
-        for(int i = 1; i < ruleContents.size(); i++) {
-            rules.push_back(ruleContents[0] + " -> " + ruleContents[i]);
+    vector<string> rules;       // Stores the rules
+    for(int i = 2; i < content.size() - 1; i++) {       // Loop from the second element (line) till the second last element. 
+                                                        // These are the lines with the rules.
+        string line = content[i];                       // Store each line of rules
+        vector<string> ruleContents = splitString(line);    // Splits the rules up so as to make them of the form S -> AB
+        for(int i = 1; i < ruleContents.size(); i++) {      // loop from the second element of ruleContents till the last
+            rules.push_back(ruleContents[0] + " -> " + ruleContents[i]);    // Stores each rule (now in form S -> AB)
         }
     }
     return rules;
 }
 
+// @brief Finds out if there is a rule from the given varible to the given term
+// @param A 2d vector of strings for rules
+// @param the variable
+// @param the term
+// @return True if there is a rule from the given varible to the given term, false otherwise 
 bool findRule(vector<vector<string>> rules, string var, string term) {
     // cout << "Looking for rule with " << var << " and " << term << endl;
-    for(vector<string> rule: rules){
-        if(rule[0] == var) {
+    for(vector<string> rule: rules){        // For each rule
+        if(rule[0] == var) {                // Find the rules for the given varible
             // cout << "rule[0] " << rule[0] << endl;
-            if(rule.back() == term){
+            if(rule.back() == term){        // Check the last element of rule
                 //cout << "Found rule" << endl;
-                return true;
+                return true;                // If the last element is the given term, return true
             }
         }
     }
     // cout << "Didn't find rule" << endl;
-    return false;
+    return false;       // If rule not found, return false
 }
 
+// @brief Finds out if a string is part of the given grammar
+// @param the string
+// @param a vector of strings for all the grammar variables 
+// @param a vector of strings for all the terminals
+// @param A 2d vector of strings for rules
+// @param the start variable
+// @return True if the string is in the language, false otherwise
 bool checkLine(string line, vector<string> variables, vector<string> terminals, vector<vector<string>> rules, string startVar){
+    // Data structure to represent the grammar: a 2d array of vectors
+    vector<string> table[line.length()][line.length()]; // arrays are the size of the input string
+
     // If the line is empty, accept only if there's a rule where the startVar goes to e
-    vector<string> table[line.length()][line.length()];
     if(line == "" || line == " "){
         // cout << "Checking empty line" << endl;
         return findRule(rules, startVar, "e");
     }
     
     // Goes through each char of the line
+    //Examine each substring of length 1
     for(int i = 0; i < line.length(); i++){
-        string b = string() + line[i];       // Turn the current char into a string
-        for(string A: variables){
-            if(findRule(rules, A, b)){
-                table[i][i].push_back(A);
+        string b = string() + line[i];      // Turn the current char into a string
+        for(string A: variables){           // Go through each variables 
+            if(findRule(rules, A, b)){      // Checking whether A -> b is a rule
+                table[i][i].push_back(A);   // If yes, place A in table(i,i)
                 // cout << "(i,i) = (" << i << ", " << i << ")" << "=";
                 // for(string str : table[i][i]){
                 //     cout << " " << str;
@@ -102,25 +118,24 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
         }
     }
 
-    for(int l = 2; l <= line.length(); l++){
+    for(int l = 2; l <= line.length(); l++){            //l is the length of the substring
         // cout << "length: " << line.length() << endl;
-        for(int i = 0; i <= line.length() - l; i++){
-            int j = i + l - 1;
+        for(int i = 0; i <= line.length() - l; i++){    // i is the start position of the substring
+            int j = i + l - 1;                          // j is the end position of the substring
             // cout << "i: " << i << endl;
             // cout << "j: " << j << endl;
-            for(int k = i; k <= j; k++) {
-                // cout << "k: " << k << endl;// For each rule that leads to 2 concatenated variables
-                for(vector<string> rule: rules){
+            for(int k = i; k <= j; k++) {               // k is the split position
+                // cout << "k: " << k << endl;
+                for(vector<string> rule: rules){        // For each rule 
                     // cout << "rule[1]= " << rule[1] << endl;
-                    if(rule[1].length() > 1){
-                        // cout << "rule[0]= " << rule[0] << ", ";
-                        string A = rule[0];
-                        // cout << "rule[1][0]= " << rule[1][0] << ", ";
+                    if(rule[1].length() > 1){           // If that rule is of the form A -> BC
+                        // Store A, B and C
+                        string A = rule[0];             
                         string B = string() + rule[1][0];
-                        // cout << "rule[1][1]= " << rule[1][1] << endl;
                         string C = string() + rule[1][1];
+                        // If table(i,k) contains B and table(k+1, j) conatains C
                         if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[k+1][j].begin(), table[k+1][j].end(), C) > 0)){
-                            table[i][j].push_back(A);
+                            table[i][j].push_back(A);       // Put A in table(i,j)
                             // cout << "table[i][j]= ";
                             // for(string str: table[i][j]) {
                             //     cout << str << " ";
@@ -141,31 +156,32 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
     //         }
     //     }
     // }
+    // Returns true if the start variable is in table(1,n). False otherwise
     return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 
 int main(){
     cout << std::boolalpha;
 
-    string grammar;
-    string input;
-    cin >> grammar >> input;    // Take in file names
+    string grammar; //Stores the grammar file
+    string input;   //Stores the input file
+    cin >> grammar >> input;    // Take in file names from console
 
-    vector<string> grammarContents = openFile(grammar);             // Turn grammar into a vector of strings, one string per line
-    vector<string> rules = readRules(grammarContents);              // Set rules to the rules of the grammar (includes '->')
+    vector<string> grammarContents = openFile(grammar);     // Turn grammar into a vector of strings, one string per line
+    vector<string> rules = readRules(grammarContents);      // Store the rules of the grammar (includes '->')
 
-    cout << "Variables: " << grammarContents[0] << endl << endl;
-    cout << "Terminals: " << grammarContents[1] << endl << endl;
+    cout << "Variables: " << grammarContents[0] << endl << endl;    //Printing out the variables
+    cout << "Terminals: " << grammarContents[1] << endl << endl;    //Printing out the terminals
     cout << "Rules: " << endl << "------" << endl;
     for(string rule: rules) {
-        cout << rule << endl;
+        cout << rule << endl;   //Printing out each rule
     }
     cout << endl;
-    cout << "Start Variable: " << grammarContents.back() << endl;
+    cout << "Start Variable: " << grammarContents.back() << endl;   //Printing out the start variable
     cout << endl;
     vector<string> inputContents = openFile(input);                 // Turn input into a vector of strings, one string per line
-    vector<string> variables = splitString(grammarContents[0]);     // Set variables to a formatted version of the first line of the grammar (each variable is a string)
-    vector<string> terminals = splitString(grammarContents[1]);     // Set variables into a formtted version of second line of input
+    vector<string> variables = splitString(grammarContents[0]);     // Store the formatted version of the first line of the grammar (each variable is a string)
+    vector<string> terminals = splitString(grammarContents[1]);     // Store the formatted version of second line of input
     string startVar = grammarContents.back();                       // Set start variable to last line of input
     
     // Format rules by turning them into a vector, where each rule is a vector containing the variable and what it turns into as their own strings
@@ -190,7 +206,6 @@ int main(){
             cout << line << ": Reject" << endl;
         }
     }
-
 }
 // g++ main.cpp -o main
 // ./main

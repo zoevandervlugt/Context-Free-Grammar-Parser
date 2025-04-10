@@ -129,20 +129,22 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
             for(int k = i; k <= j; k++) {               // k is the split position
                 // cout << "k: " << k << endl;
                 for(vector<string> rule: rules){        // For each rule 
-                    // cout << "rule[1]= " << rule[1] << endl;
+                    cout << "rule[1] = " << rule[1] << endl;
                     if(rule[1].length() > 1){           // If that rule is of the form A -> BC
                         // Store A, B and C
                         string A = rule[0];             
                         string B = string() + rule[1][0];
                         string C = string() + rule[1][1];
+                        cout << "A = " << A << ", B = " << B << ", C = " << C << endl;
                         // If table(i,k) contains B and table(k+1, j) conatains C
                         if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[k+1][j].begin(), table[k+1][j].end(), C) > 0)){
+                            cout << "pushing back " << A << endl;
                             table[i][j].push_back(A);       // Put A in table(i,j)
-                            // cout << "table[i][j]= ";
-                            // for(string str: table[i][j]) {
-                            //     cout << str << " ";
-                            // }
-                            // cout << endl;
+                            cout << "table[i][j]= ";
+                            for(string str: table[i][j]) {
+                                cout << str << " ";
+                            }
+                            cout << endl;
                         }
                     }
                 }
@@ -159,6 +161,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
     //     }
     // }
     // Returns true if the start variable is in table(1,n). False otherwise
+    cout << "about to return" << endl;
     return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 
@@ -192,12 +195,12 @@ int main(){
         formattedRules.push_back(splitString(rule));
     }
 
-    // for(vector<string> rule: formattedRules){
-    //     for(string str: rule){
-    //         cout << str << " ";
-    //     }
-    //     cout << endl;
-    // }
+    for(vector<string> rule: formattedRules){
+        for(string str: rule){
+            cout << str << " ";
+        }
+        cout << endl;
+    }
 
     // Check each line against the grammar using checkline, and print the matching message
     for(string line: inputContents){

@@ -2,16 +2,16 @@
 using namespace std;
 
 
-// @brief Opens a file and returns a vector of strings (one for each line)
+// @brief Opens a file and returns each line as a vector of strings
 // @param Name of file
-// @return Vector of strings (one for each file line)
+// @return Vector of strings
 vector<string> openFile(string fileName) {
-    vector<string> lines;
-    ifstream file(fileName);
-    string line;
-    if(file.is_open()){
-        while(getline(file, line)){
-            lines.push_back(line);
+    vector<string> lines;       // To store each line
+    ifstream file(fileName);    // Opening the file
+    string line;                // Buffer to store lines temporarily
+    if(file.is_open()){                 // Go through the file
+        while(getline(file, line)){     //Get's each line from the file and stores it in the buffer
+            lines.push_back(line);      // If we are not at end of file, add the line to the vector
         }
         file.close();
     }
@@ -22,11 +22,11 @@ vector<string> openFile(string fileName) {
 // @param String to be split
 // @return String vector containing only the variable and terminal names, in the order given
 vector<string> splitString(string s){
-    vector<string> strings;
-    string current = "";
-    int i = 0;
-    while(i < s.size()) {
-        if(s[i] == ','){
+    vector<string> strings;     // Stores strings containing only the variable and terminal names
+    string current = "";        // Temporarily storing 
+    int i = 0;      // Loop variable
+    while(i < s.size()) {       // Loop till the end of the input string
+        if(s[i] == ','){        // 
             strings.push_back(current);
             current = "";
             i = i+2;

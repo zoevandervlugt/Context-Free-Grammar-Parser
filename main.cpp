@@ -14,6 +14,8 @@ vector<string> openFile(string fileName) {
             lines.push_back(line);      // If we are not at end of file, add the line to the vector
         }
         file.close();
+    } else{
+        cout << "File could not be opened" << endl;
     }
     return lines;
 }
@@ -199,7 +201,7 @@ int main(){
 
     // Check each line against the grammar using checkline, and print the matching message
     for(string line: inputContents){
-        // cout << line << endl;
+        cout << line << endl;
         if(checkLine(line, variables, terminals, formattedRules, startVar)){
             cout << line << ": Accept" << endl;
         } else {
@@ -210,3 +212,6 @@ int main(){
 // g++ main.cpp -o main
 // ./main
 // astarGrammar.txt astarGrammarInput.txt
+// anbnGrammar.txt anbnGrammarInput.txt
+// palindromeGrammar.txt palindromeGrammarInput.txt
+// equalAsBsGrammar.txt equalAsBsGrammarInput.txt

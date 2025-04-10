@@ -1,0 +1,7 @@
+S, X, J, A, B
+a, b
+S -> AJ | AB
+X -> AJ | AB
+J -> XB
+A -> a 
+B -> b

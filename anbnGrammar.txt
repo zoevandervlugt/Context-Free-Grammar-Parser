@@ -1,6 +1,6 @@
 S, X, J, A, B
 a, b
-S -> AY | AB | e
+S -> AJ | AB | e
 X -> AJ | AB
 J -> XB
 A -> a

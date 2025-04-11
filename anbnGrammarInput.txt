@@ -4,8 +4,17 @@ aabb
 aaabbb
 aaaabbbb
 aaaaabbbbb
+aaaaaabbbbbb
+aaaaaaabbbbbbb
+aaaaaaaabbbbbbbb
+aaaaaaaaabbbbbbbbb
 aaaaaabbbbb
 b
 ba
 aaabbbb
 aabba
+bbbaaa
+abababa
+aaaaaaaaaaaaaaaaaab
+aaabbbabbbabb
+aa bbb

@@ -1,20 +1,21 @@
 #include <bits/stdc++.h>
-using namespace std;
+using namespace std;            // Let all names in the std namespace be available without specifying each time
 
 
 // @brief Opens a file and returns each line as a vector of strings
 // @param Name of file
 // @return Vector of strings
 vector<string> openFile(string fileName) {
-    vector<string> lines;       // To store each line
+    vector<string> lines;       // Vector to store each line
     ifstream file(fileName);    // Opening the file
     string line;                // Buffer to store lines temporarily
-    if(file.is_open()){                 // Go through the file
-        while(getline(file, line)){     //Get's each line from the file and stores it in the buffer
-            lines.push_back(line);      // If we are not at end of file, add the line to the vector
+    if(file.is_open()){                 // Check that the file is open
+        while(getline(file, line)){     // Gets each line from the file and stores it in the buffer, and continues until the end of file
+            lines.push_back(line);      // Add current line to the end of the vector
         }
         file.close();
     } else{
+        // Print an error message if the file isn't open
         cout << "File could not be opened" << endl;
     }
     return lines;
@@ -23,27 +24,27 @@ vector<string> openFile(string fileName) {
 // @brief Given a string, removes extraneous characters like ',' ' ' '->' and converts to a vector (each name is its own string)
 //        For example, "A, B, X" would return ["A", "B", "X"] and "A -> BX" would return ["A", "BX"]
 // @param String to be split
-// @return String vector containing only the variable and terminal names, in the order given
+// @return Vector of strings containing only the variable and terminal names, in the order given
 vector<string> splitString(string s){
-    vector<string> strings;     // Stores strings containing only the variable and terminal names
-    string current = "";        // Temporarily storing the current set of variables or the terminal
+    vector<string> strings;     // Make the vector that the original string will be converted into
+    string current = "";        // Temporarily storing the current string of variables or the terminal
     int i = 0;      // Loop variable representing index of the current char
     while(i < s.size()) {       // Loop till the end of the input string
-        if(s[i] == ','){        // Check if the current char is a comma
-            strings.push_back(current);         // Push what was previously stored as the current string to the end of the vector
-            current = "";                       // Reset the current string
-            i = i+2;                            // Skip ahead two indices (accounting for the space)
-        } else if(s[i] == ' '){         // Check if the current char is a space
-            strings.push_back(current);     // Push the current string to the back of the vector
-            current = "";                   // Reset the current string
-            if(s[i+1] == '-'){              // If the current char is a space, the extraneous chars are either " -> " or " | ", so check if its the first
-                i = i+4;                    // Skip ahead to account for the chars in " -> "
-            } else{                         // If it doesn't have "-", it must be " | "
-                i = i+3;                    // Skip ahead extraneous chars
+        if(s[i] == ','){            // Check if the current char should be excluded using a series of if statements
+            strings.push_back(current);         // Push the most recently stored string of variables/terminal to the end of the vector
+            current = "";                       // Reset that string
+            i = i+2;                            // Skip ahead based on what the extraneous chars must be
+        } else if(s[i] == ' '){
+            strings.push_back(current); 
+            current = "";
+            if(s[i+1] == '-'){              // If the current char is a space, the extraneous chars are either " -> " or " | ", so verify with additional if statements
+                i = i+4;
+            } else{
+                i = i+3;
             }
         } else{                 // If the current character isn't extraneous
-            current = current + s[i];           // Add the char to the current string
-            if(i == s.size() - 1) {             // If it's the last character, push the current string to the vecotr
+            current = current + s[i];           // Add the char to the end of the current string
+            if(i == s.size() - 1) {             // If it's the last character, push the current string to the vector
                 strings.push_back(current);
             }
             i++;
@@ -206,6 +207,7 @@ int main(){
         }
     }
 }
+// Commands to run in terminal
 // g++ main.cpp -o main
 // ./main
 // astarGrammar.txt astarGrammarInput.txt

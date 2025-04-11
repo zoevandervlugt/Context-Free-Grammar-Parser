@@ -21,28 +21,29 @@ vector<string> openFile(string fileName) {
 }
 
 // @brief Given a string, removes extraneous characters like ',' ' ' '->' and converts to a vector (each name is its own string)
+//        For example, "A, B, X" would return ["A", "B", "X"] and "A -> BX" would return ["A", "BX"]
 // @param String to be split
 // @return String vector containing only the variable and terminal names, in the order given
 vector<string> splitString(string s){
     vector<string> strings;     // Stores strings containing only the variable and terminal names
-    string current = "";        // Temporarily storing 
-    int i = 0;      // Loop variable
+    string current = "";        // Temporarily storing the current set of variables or the terminal
+    int i = 0;      // Loop variable representing index of the current char
     while(i < s.size()) {       // Loop till the end of the input string
-        if(s[i] == ','){        // 
-            strings.push_back(current);
-            current = "";
-            i = i+2;
-        } else if(s[i] == ' '){
-            strings.push_back(current);
-            current = "";
-            if(s[i+1] == '-'){
-                i = i+4;
-            } else{
-                i = i+3;
+        if(s[i] == ','){        // Check if the current char is a comma
+            strings.push_back(current);         // Push what was previously stored as the current string to the end of the vector
+            current = "";                       // Reset the current string
+            i = i+2;                            // Skip ahead two indices (accounting for the space)
+        } else if(s[i] == ' '){         // Check if the current char is a space
+            strings.push_back(current);     // Push the current string to the back of the vector
+            current = "";                   // Reset the current string
+            if(s[i+1] == '-'){              // If the current char is a space, the extraneous chars are either " -> " or " | ", so check if its the first
+                i = i+4;                    // Skip ahead to account for the chars in " -> "
+            } else{                         // If it doesn't have "-", it must be " | "
+                i = i+3;                    // Skip ahead extraneous chars
             }
-        } else{
-            current = current + s[i];
-            if(i == s.size() - 1) {
+        } else{                 // If the current character isn't extraneous
+            current = current + s[i];           // Add the char to the current string
+            if(i == s.size() - 1) {             // If it's the last character, push the current string to the vecotr
                 strings.push_back(current);
             }
             i++;
@@ -76,7 +77,7 @@ bool findRule(vector<vector<string>> rules, string var, string term) {
     // cout << "Looking for rule with " << var << " and " << term << endl;
     for(vector<string> rule: rules){        // For each rule
         if(rule[0] == var) {                // Find the rules for the given varible
-            // cout << "rule[0] " << rule[0] << endl;
+            // cout << "rule[0]: " << rule[0] << endl;
             if(rule.back() == term){        // Check the last element of rule
                 //cout << "Found rule" << endl;
                 return true;                // If the last element is the given term, return true
@@ -138,13 +139,7 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
                         // cout << "A = " << A << ", B = " << B << ", C = " << C << endl;
                         // If table(i,k) contains B and table(k+1, j) conatains C
                         if((count(table[i][k].begin(), table[i][k].end(), B) > 0) && (count(table[k+1][j].begin(), table[k+1][j].end(), C) > 0)){
-                            // cout << "pushing back " << A << endl;
                             table[i][j].push_back(A);       // Put A in table(i,j)
-                            // cout << "table[i][j]= ";
-                            // for(string str: table[i][j]) {
-                            //     cout << str << " ";
-                            // }
-                            // cout << endl;
                         }
                     }
                 }
@@ -161,7 +156,6 @@ bool checkLine(string line, vector<string> variables, vector<string> terminals, 
     //     }
     // }
     // Returns true if the start variable is in table(1,n). False otherwise
-    // cout << "about to return" << endl;
     return find(table[0][line.length() - 1].begin(), table[0][line.length() - 1].end(), startVar) != table[0][line.length() - 1].end();
 }
 

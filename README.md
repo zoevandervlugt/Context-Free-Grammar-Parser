@@ -1,4 +1,6 @@
-# Context-Free-Grammar-Parser [Document Link](https://docs.google.com/document/d/1NzWoRt5bRfIU2RMqYrBLgnyAt2gfWIe5aHU6L1U8qQk/edit?usp=sharing)
+# Context-Free-Grammar-Parser [Course Project Description](https://docs.google.com/document/d/1NzWoRt5bRfIU2RMqYrBLgnyAt2gfWIe5aHU6L1U8qQk/edit?usp=sharing)
+This repository contains coursework from my Theory of Computation class at Southwestern University. All code is original unless otherwise noted. This code was produced as a collaboration between Zoe Van Der Vlugt and Reeha Rauf. Do not submit this code as your own in any academic setting.
+
 ## Objectives
 The purpose of this assignment is to get familiar  with designing grammars, and then designing programs that can use a grammar to parse and filter strings. It utilizes the technique of dynamic programming for more efficiency.
 
